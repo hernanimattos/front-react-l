@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
+import Button from './components/Button';
+import Form from './components/Form';
+import Input from './components/Input';
 
 function App() {
   const [inputForm, setForm] = useState({
@@ -11,41 +14,30 @@ function App() {
     setForm({ ...inputForm, [e.target.name]: e.target.value });
   };
 
-  const handleAuth = (event: any) => {
+  const handleSubmit = (event: any) => {
+    console.log(inputForm);
     event.preventDefault();
-
-    console.log(event.target.elements.email.value);
   };
   return (
     <div className='container'>
       <div className='App'>
         <div className='image-login'>image</div>
-        <form className='form-login' onSubmit={(event) => handleAuth(event)}>
-          <h2>Login</h2>
-          <input
-            id='email'
+
+        <Form handleSubmit={handleSubmit}>
+          <Input
             name='email'
+            status='valid'
             type='text'
-            placeholder='e-mail'
-            autoComplete='on'
-            className='input'
-            value={inputForm.email}
             onChange={(e) => changeHandler(e)}
-            required
           />
-          <input
-            id='password'
+          <Input
             name='password'
+            status='valid'
             type='password'
-            placeholder='password'
-            autoComplete='off'
-            value={inputForm.password}
             onChange={(e) => changeHandler(e)}
           />
-          <button type='submit' value='enter'>
-            Vai
-          </button>
-        </form>
+          <Button>vai </Button>
+        </Form>
       </div>
     </div>
   );
