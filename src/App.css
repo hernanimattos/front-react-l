@@ -9,16 +9,18 @@
 }
 .container {
   max-width: 1200px;
-  padding-right: 1rem;
-  padding-left: 1rem;
-  background-color: red;
   width: 100%;
+  margin: 0 auto;
+  height: 100vh;
 }
 
 .App {
   text-align: center;
   display: flex;
   justify-content: center;
+  height: inherit;
+  padding-right: 2rem;
+  padding-left: 2rem;
 }
 
 .form-login {
@@ -29,6 +31,24 @@
 }
 .image-login {
   width: 100%;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+.image-login img {
+  width: 100%;
+}
+
+@media screen and (max-width: 678px) {
+  .App {
+    flex-direction: column;
+  }
+  .image-login {
+    display: block;
+    padding-bottom: 2rem;
+  }
 }
 
 input {

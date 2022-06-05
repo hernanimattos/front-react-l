@@ -1,10 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import { useMutation, gql } from '@apollo/client';
+import React, { useState } from 'react';
 import './App.css';
-import Button from './components/Button';
-import Form from './components/Form';
-import Input from './components/Input';
+import Button from './components/Button/Button';
+import Form from './components/Form/Form';
+import Input from './components/Input/Input';
+import Toast from './components/Toast/Toast';
+import loja from './images/loja.png';
+
+const AUTH_USER = gql`
+  mutation AuthUser($input: Auth) {
+    authUser(input: $input) {
+      token
+      blocked
+      message
+    }
+  }
+`;
 
 function App() {
+  const [authUser, { loading, error, data }] = useMutation(AUTH_USER);
+
   const [inputForm, setForm] = useState({
     email: '',
     password: '',
@@ -15,15 +30,19 @@ function App() {
   };
 
   const handleSubmit = (event: any) => {
-    console.log(inputForm);
     event.preventDefault();
+
+    console.log(loading);
+    authUser({ variables: { input: inputForm } });
   };
   return (
     <div className='container'>
       <div className='App'>
-        <div className='image-login'>image</div>
+        <div className='image-login'>
+          <img src={loja} alt='' />
+        </div>
 
-        <Form handleSubmit={handleSubmit}>
+        <Form className='form-login' handleSubmit={handleSubmit}>
           <Input
             name='email'
             status='valid'
@@ -36,7 +55,10 @@ function App() {
             type='password'
             onChange={(e) => changeHandler(e)}
           />
-          <Button>vai </Button>
+          <Button loading={loading} disabled={loading}>
+            Enviar
+          </Button>
+          <Toast show={true} message={`${data?.authUser?.message}`} />
         </Form>
       </div>
     </div>
