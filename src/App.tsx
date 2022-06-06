@@ -1,5 +1,5 @@
 import { useMutation, gql } from '@apollo/client';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import './App.css';
 import Button from './components/Button/Button';
 import Form from './components/Form/Form';
@@ -25,7 +25,7 @@ function App() {
   const [authUser, { loading, error, data }] = useMutation(AUTH_USER);
 
   const { authUser: response } = data || { authUser: {} };
-  const { description, token } = response || { description: {} };
+  let { description, token } = response || { description: {} };
   const {
     blocked,
     error: authError,
@@ -36,17 +36,39 @@ function App() {
     email: '',
     password: '',
   });
+  const [validate, setValidate] = useState({
+    message: '',
+    error: false,
+    status: '',
+  });
 
   const changeHandler = (e: any) => {
     setForm({ ...inputForm, [e.target.name]: e.target.value });
   };
 
+  const validateForm = useCallback(() => {
+    setValidate({
+      message: 'Preencha os campo email e password',
+      error: true,
+      status: 'error',
+    });
+  }, []);
+
   const handleSubmit = (event: any) => {
     event.preventDefault();
 
-    console.log(loading);
+    if (inputForm.email.length === 0 && inputForm.password.length === 0) {
+      return validateForm();
+    }
+    setValidate({
+      message: '',
+      error: false,
+      status: '',
+    });
+
     authUser({ variables: { input: inputForm } });
   };
+
   return (
     <div className='container'>
       <div className='App'>
@@ -59,18 +81,23 @@ function App() {
             name='email'
             type='text'
             onChange={(e) => changeHandler(e)}
-            status={status}
+            status={status || validate.status}
           />
           <Input
             name='password'
             type='password'
             onChange={(e) => changeHandler(e)}
-            status={status}
+            status={status || validate.status}
           />
           <Button loading={loading} disabled={loading}>
             Enviar
           </Button>
-          <Toast show={authError} message={`${message}`} status={status} />
+          <Toast show={authError} message={message} status={status} />
+          <Toast
+            show={validate.error}
+            message={validate.message}
+            status={validate.status}
+          />
         </Form>
       </div>
     </div>
