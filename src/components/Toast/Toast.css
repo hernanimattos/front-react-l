@@ -1,0 +1,18 @@
+.toast {
+  padding: 1rem;
+  border-radius: 4px;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.toast-error {
+  background-color: #ee4a4afc;
+  color: #fff;
+  border: 2px solid #cc1616;
+}
+
+.toast-warning {
+  background-color: #eee34afc;
+  color: #fff;
+  border: 2px solid #f9e507;
+}

@@ -1,5 +1,5 @@
 import React, { InputHTMLAttributes } from 'react';
-
+import './Input.css';
 interface InputProps {
   status: string;
 }

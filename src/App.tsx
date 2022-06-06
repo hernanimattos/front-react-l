@@ -11,8 +11,12 @@ const AUTH_USER = gql`
   mutation AuthUser($input: Auth) {
     authUser(input: $input) {
       token
-      blocked
-      message
+      description {
+        error
+        blocked
+        message
+        status
+      }
     }
   }
 `;
@@ -20,6 +24,14 @@ const AUTH_USER = gql`
 function App() {
   const [authUser, { loading, error, data }] = useMutation(AUTH_USER);
 
+  const { authUser: response } = data || { authUser: {} };
+  const { description, token } = response || { description: {} };
+  const {
+    blocked,
+    error: authError,
+    status,
+    message,
+  } = description || { blocked: false, error: false, status: '', message: '' };
   const [inputForm, setForm] = useState({
     email: '',
     password: '',
@@ -45,20 +57,20 @@ function App() {
         <Form className='form-login' handleSubmit={handleSubmit}>
           <Input
             name='email'
-            status='valid'
             type='text'
             onChange={(e) => changeHandler(e)}
+            status={status}
           />
           <Input
             name='password'
-            status='valid'
             type='password'
             onChange={(e) => changeHandler(e)}
+            status={status}
           />
           <Button loading={loading} disabled={loading}>
             Enviar
           </Button>
-          <Toast show={true} message={`${data?.authUser?.message}`} />
+          <Toast show={authError} message={`${message}`} status={status} />
         </Form>
       </div>
     </div>
