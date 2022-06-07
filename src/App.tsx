@@ -22,12 +22,11 @@ const AUTH_USER = gql`
 `;
 
 function App() {
-  const [authUser, { loading, error, data }] = useMutation(AUTH_USER);
+  const [authUser, { loading, data }] = useMutation(AUTH_USER);
 
   const { authUser: response } = data || { authUser: {} };
-  let { description, token } = response || { description: {} };
+  let { description } = response || { description: {} };
   const {
-    blocked,
     error: authError,
     status,
     message,
