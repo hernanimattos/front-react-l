@@ -1,4 +1,4 @@
-import React, { AllHTMLAttributes } from 'react';
+import React from 'react';
 import './Toast.css';
 
 interface ToastProps {
